@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
@@ -24,11 +25,11 @@ func Run() {
 
 	// Get the root
 	app.Get("/", func(c *fiber.Ctx) error {
-		return c.SendString(`SH Raw Pastes Hosting
+		return c.SendString(fmt.Sprintf(`SH Raw Pastes Hosting
 
 
-cat file.txt | curl -X POST --data-binary @- {{host}}'
-		`)
+cat file.txt | curl -X POST --data-binary @- %s
+		`, os.Getenv("HOST")))
 
 	})
 
