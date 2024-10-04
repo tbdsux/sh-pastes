@@ -22,6 +22,7 @@ func Run() {
 		Port:     5432,
 	})
 
+	// Get the root
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString(`SH Raw Pastes Hosting
 
@@ -31,6 +32,7 @@ cat file.txt | curl -X POST --data-binary @- {{host}}'
 
 	})
 
+	// Create a new paste
 	app.Post("/", func(c *fiber.Ctx) error {
 		id, err := gonanoid.New()
 		if err != nil {
@@ -44,10 +46,15 @@ cat file.txt | curl -X POST --data-binary @- {{host}}'
 		return c.SendString(id)
 	})
 
+	// Get paste by id
 	app.Get("/:id", func(c *fiber.Ctx) error {
 		data, err := store.Get(c.Params("id"))
 		if err != nil {
-			return c.SendStatus(404)
+			return c.SendStatus(500)
+		}
+
+		if data == nil {
+			return c.Status(404).SendString("Not Found")
 		}
 
 		return c.SendString(string(data))

@@ -18,4 +18,4 @@ services:
       watch:
         - path: .
           target: /api
-          action: sync
+          action: rebuild
