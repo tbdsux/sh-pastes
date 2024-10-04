@@ -6,6 +6,8 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: shpastes
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
 
   web:
     build: .
@@ -19,3 +21,6 @@ services:
         - path: .
           target: /api
           action: rebuild
+
+volumes:
+  postgres-db:
