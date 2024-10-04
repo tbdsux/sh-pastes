@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: shpastes
+
+  web:
+    build: .
+    restart: always
+    ports:
+      - "9999:9999"
+    env_file:
+      - .env
+    develop:
+      watch:
+        - path: .
+          target: /api
+          action: sync
